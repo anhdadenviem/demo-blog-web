@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xtra Blog</title>
+    <link rel="stylesheet" href="fontawesome/css/all.min.css"> <!-- https://fontawesome.com/ -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet"> <!-- https://fonts.google.com/ -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/templatemo-xtra-blog.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js"></script>
+    <!--
+
+    TemplateMo 553 Xtra Blog
+
+    https://templatemo.com/tm-553-xtra-blog
+
+    -->
+</head>
+<body>
+<header class="tm-header-login" id="tm-header">
+    <div class="tm-header-wrapper-login">
+        <div id="display"></div>
+    </div>
+</header>
+<script src="js/jquery.min.js"></script>
+<script src="js/templatemo-script.js"></script>
+<script>
+    const USER_URL='http://localhost:8080/user-management/users'
+    showLoginForm()
+    function showLoginForm(){
+        let str=`<div class="nav-login">
+            <div class="mb-3 mx-auto tm-site-logo" style="border: 5px solid #00CCCC"><i class="fas fa-times fa-2x"></i></div>
+            <h1 class="text-center" style="color:#00CCCC;">Đăng nhập </h1>
+            <div class="nav-login">
+                <div class="tm-color-primary">Nhập User:</div>
+                <input class="form-control tm-search-input" id="user" type="text" >
+                <div class="tm-color-primary">Nhập Password:</div>
+                <input class="form-control tm-search-input" id="password" type="password">
+                <div class="text-center">
+                    <a href="#/" class="mt-3 tm-btn tm-btn-primary-login" onclick="login()">
+                        Đăng nhập
+                    </a>
+                    <div><a href="#/" class="" onclick="showRegisterForm()">
+                            <i>Tạo tài khoản</i>
+                        </a>
+                    </div>
+                    <div id="to-index" type="hidden"></div>
+                </div>
+            </div>
+        </div>
+        <div class="tm-mb-65" style="text-align: center ">
+            <a href="https://facebook.com" class="tm-social-link">
+                <i class="fab fa-facebook tm-social-icon"></i>
+            </a>
+            <a href="https://twitter.com" class="tm-social-link">
+                <i class="fab fa-twitter tm-social-icon"></i>
+            </a>
+            <a href="https://instagram.com" class="tm-social-link">
+                <i class="fab fa-instagram tm-social-icon"></i>
+            </a>
+            <a href="https://linkedin.com" class="tm-social-link">
+                <i class="fab fa-linkedin tm-social-icon"></i>
+            </a>
+        </div>`
+        document.getElementById("display").innerHTML=str;
+    }
+
+    function showRegisterForm(){
+        let str=`<div class="nav-login">
+            <div class="mb-3 mx-auto tm-site-logo" style="border: 5px solid #00CCCC"><i class="fas fa-times fa-2x"></i></div>
+            <h1 class="text-center" style="color:#00CCCC;">Đăng ký</h1>
+            <div class="nav-login">
+                <div class="tm-color-primary">Nhập User:</div>
+                    <input class="form-control tm-search-input" id="user" type="text" >
+                    <div class=" tm-color-primary">Nhập Password:</div>
+                    <input class="form-control tm-search-input" id="password" type="password">
+                    <div class=" tm-color-primary">Nhập Tên:</div>
+                    <input class="form-control tm-search-input" id="name" type="text">
+                    <div class=" tm-color-primary">Nhập Ngày Sinh:</div>
+                    <input class="form-control tm-search-input" id="birthday" type="date">
+                    <div class=" tm-color-primary">Nhập Địa chỉ:</div>
+                    <input class="form-control tm-search-input" id="address" type="text">
+                    <div class="text-center">
+                    <a href="#/" class="mt-3 tm-btn tm-btn-primary-login" onclick="register()">
+                        Đăng ký
+                    </a>
+                    <div><a href="#/" class="" onclick="showLoginForm()">
+                        <i>Back to login</i>
+                    </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tm-mb-65" style="text-align: center ">
+            <a href="https://facebook.com" class="tm-social-link">
+                <i class="fab fa-facebook tm-social-icon"></i>
+            </a>
+            <a href="https://twitter.com" class="tm-social-link">
+                <i class="fab fa-twitter tm-social-icon"></i>
+            </a>
+            <a href="https://instagram.com" class="tm-social-link">
+                <i class="fab fa-instagram tm-social-icon"></i>
+            </a>
+            <a href="https://linkedin.com" class="tm-social-link">
+                <i class="fab fa-linkedin tm-social-icon"></i>
+            </a>
+        </div>`
+        document.getElementById("display").innerHTML=str;
+    }
+    function login(){
+        let data = {
+            user: document.getElementById('user').value,
+            password: document.getElementById('password').value
+        }
+        axios.post(USER_URL+'/login',data).then(res=>{
+            if(res.data != 0){
+                alert('Đăng nhập thành công')
+                localStorage.setItem('id_user',res.data[0].id)
+                localStorage.setItem('user',JSON.stringify(res.data[0]))
+                document.getElementById('to-index').innerHTML=`
+                <a href="index.html" class="mt-3 tm-btn tm-btn-primary-login">
+                    Trang chủ
+                </a>
+                `
+            }
+            else {
+                alert('Tài khoản hoặc mật khẩu sai!')
+            }
+
+        })
+    }
+    function register(){
+        let data = {
+            user: document.getElementById('user').value,
+            password: document.getElementById('password').value,
+            name: document.getElementById('name').value,
+            birthday: document.getElementById('birthday').value,
+            address: document.getElementById('address').value
+        }
+        axios.post(USER_URL+'/register',data).then(res=>{
+            console.log(res.data)
+            showLoginForm()
+            alert('Đăng ký thành công')
+        })
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+</head>
+<body>
+<div id="body"></div>
+<div>
+    <button onclick="showFormLogin()">Đăng nhập</button>
+    <button onclick="showFormRegister()">Đăng ký</button>
+</div>
+<script>
+    const USER_URL ='http://localhost:8080/user-management/users'
+    function showFormRegister(){
+        let str = `
+        <h3>Register</h3> <br>
+        User: <input type="text" id="user"><br>
+        Password: <input type="text" id="password"><br>
+        <button onclick="register()">Register</button>
+        `
+        document.getElementById("body").innerHTML = str;
+    }
+    function register(){
+        let data = {
+            user:document.getElementById("user").value,
+            password:document.getElementById("password").value
+        }
+        axios.post(USER_URL+'/register', data).then(res => {
+            alert('Đăng ký thành công')
+            showFormLogin()
+        })
+    }
+    function showFormLogin(){
+        let str = `
+        <h3>Login</h3> <br>
+        User: <input type="text" id="user"><br>
+        Password: <input type="text" id="password"><br>
+        <button onclick="login()">Login</button>
+        `
+        document.getElementById("body").innerHTML = str;
+    }
+    function login(){
+        let data = {
+            user:document.getElementById("user").value,
+            password:document.getElementById("password").value
+        }
+        axios.post(USER_URL+'/login',data).then(res=>{
+            alert('Đăng nhập thành công')
+        })
+    }
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xtra Blog</title>
+    <link rel="stylesheet" href="fontawesome/css/all.min.css"> <!-- https://fontawesome.com/ -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <!-- https://fonts.google.com/ -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/templatemo-xtra-blog.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+    <!--
+
+    TemplateMo 553 Xtra Blog
+
+    https://templatemo.com/tm-553-xtra-blog
+
+    -->
+</head>
+<body>
+<header class="tm-header" id="tm-header">
+    <div id="local"></div>
+    <div id="btn-logout"></div>
+    <div class="tm-header-wrapper">
+        <button class="navbar-toggler" type="button" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="tm-site-header">
+            <div class="mb-3 mx-auto tm-site-logo"><i class="fas fa-times fa-2x"></i></div>
+            <h1 class="text-center">Xtra Blog</h1>
+        </div>
+        <nav class="tm-nav" id="tm-nav">
+            <ul>
+                <li class="tm-nav-item"><a href="index.html" class="tm-nav-link" onclick="">
+                        <i class="fas fa-home"></i>
+                        Trang chủ
+                </a></li>
+                <li class="tm-nav-item"><a href="post.html" class="tm-nav-link">
+                    <i class="fas fa-pen"></i>
+                    Xem bài viêt
+                </a></li>
+                <li class="tm-nav-item active"><a href="blog.html" class="tm-nav-link">
+                    <i class="fas fa-users"></i>
+                    Quản lý bài viết
+                </a></li>
+                <li class="tm-nav-item"><a href="contact.html" class="tm-nav-link">
+                    <i class="far fa-comments"></i>
+                    Contact Us
+                </a></li>
+            </ul>
+        </nav>
+        <div class="tm-mb-65">
+            <a href="https://facebook.com" class="tm-social-link">
+                <i class="fab fa-facebook tm-social-icon"></i>
+            </a>
+            <a href="https://twitter.com" class="tm-social-link">
+                <i class="fab fa-twitter tm-social-icon"></i>
+            </a>
+            <a href="https://instagram.com" class="tm-social-link">
+                <i class="fab fa-instagram tm-social-icon"></i>
+            </a>
+            <a href="https://linkedin.com" class="tm-social-link">
+                <i class="fab fa-linkedin tm-social-icon"></i>
+            </a>
+        </div>
+    </div>
+</header>
+<div class="container-fluid">
+    <main class="tm-main">
+        <!-- Search form -->
+        <div class="row tm-row tm-mb-45">
+            <div class="col-12">
+                <hr class="tm-hr-primary tm-mb-55">
+                <img src="img/about-01.jpg" alt="Image" class="img-fluid">
+            </div>
+        </div>
+        <div class="row tm-row tm-mb-40">
+            <div class="col-12">
+                <div class="mb-4">
+                    <h2 class="pt-2 tm-mb-40 tm-color-primary tm-post-title">Manage</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row tm-row tm-mb-120">
+            <div class="col-lg-4 tm-about-col">
+                <div class="tm-bg-gray tm-about-pad">
+                    <div class="text-center tm-mt-40 tm-mb-60">
+                        <a href="#/" onclick="showFormAdd()"><i class="fas fa-file-import fa-4x tm-color-primary"></i></a>
+                    </div>
+                    <h2 class="mb-3 tm-color-primary tm-post-title" style="text-align: center">Thêm bài viết mới </h2>
+                </div>
+            </div>
+            <div class="col-lg-4 tm-about-col">
+                <div class="tm-bg-gray tm-about-pad">
+                    <div class="text-center tm-mt-40 tm-mb-60">
+                        <a href="#/" onclick="showMyList()"><i class="fas fa-users-cog fa-4x tm-color-primary"></i>
+                        </a>
+                    </div>
+                    <h2 class="mb-3 tm-color-primary tm-post-title" style="text-align: center">Danh sách bài viết cá
+                        nhân</h2>
+                </div>
+            </div>
+            <div class="col-lg-4 tm-about-col">
+                <div class="tm-bg-gray tm-about-pad">
+                    <div class="text-center tm-mt-40 tm-mb-60">
+                        <a href="#/" onclick="findMyPost()"><i class="fas fa-search fa-4x tm-color-primary"></i>
+                        </a>
+                    </div>
+                    <h2 class="mb-3 tm-color-primary tm-post-title" style="text-align: center">Tìm kiếm bài viết</h2>
+                </div>
+            </div>
+        </div>
+        <!--            list manage-->
+        <div class="row tm-row" id="blog-display"></div>
+        <div id="form" type="hidden"></div>
+        <div class="row tm-row" id="form-edit" type="hidden"></div>
+
+        <hr class="tm-hr-primary  tm-mb-55">
+        <footer class="row tm-row">
+            <div class="col-md-6 col-12 tm-color-gray">
+                Design: <a rel="nofollow" target="_parent" href="https://templatemo.com" class="tm-external-link">TemplateMo</a>
+            </div>
+            <div class="col-md-6 col-12 tm-color-gray tm-copyright">
+                Copyright 2020 Xtra Blog Company Co. Ltd.
+            </div>
+        </footer>
+    </main>
+</div>
+<script src="js/jquery.min.js"></script>
+<script src="js/templatemo-script.js"></script>
+<script>
+    const BLOG_URL = 'http://localhost:8080/user-management/users/blog-management/blogs'
+    const USER_URL = 'http://localhost:8080/user-management/users'
+    const LIKE_URL = 'http://localhost:8080/like'
+    let user = localStorage.getItem('user')
+
+    function getUser(callback) {
+        let id = localStorage.getItem('id_user')
+        axios.get(USER_URL + '/' + id).then(res => {
+            let user_login = res.data
+            callback(user_login)
+        })
+    }
+
+    loadUser()
+
+    function loadUser() {
+        if (user != null) {
+            getUser(function (user_login) {
+                document.getElementById('local').innerHTML = `
+                        <img src="${user_login.img}" rel="nofollow" href="#/" class="mt-1 ml-1 tm-social-link-user" onclick="showUser()">
+                        <a rel="nofollow" href="login.html" class=" ml-1 tm-new-badge-user" onclick="logout()">
+                        Logout
+                        </a>
+                        `
+            })
+        } else {
+            document.getElementById('local').innerHTML = `
+            <a rel="nofollow" href="login.html" class="tm-social-link-user">
+            Login
+            </a>`
+        }
+    }
+    function showUser() {
+        document.getElementById('form-edit').innerHTML = ''
+        getUser(function (user_login) {
+            document.getElementById('form').innerHTML = `
+                <hr class="col-12">
+                <h1 class="tm-pt-30 tm-color-primary modal-title text-center">Thông tin cá nhân</h1>
+                            <form class="form-inline tm-mb-80 tm-search-form2">
+                            <div>
+                                <div class="tm-color-primary">Tên người dùng:</div>
+                                <input class="form-control tm-search-input" value="${user_login.name}" readonly>
+                                <div class="tm-color-primary">Năm sinh:</div>
+                                <input class="form-control tm-search-input" value="${user_login.birthday}" readonly>
+                                <div class="tm-color-primary">Địa chỉ:</div>
+                                <input class="form-control tm-search-input" value="${user_login.address}" readonly>
+                                <div class="mt-3">
+                                    <a href="#/" class="tm-btn-primary" onclick="turnOnEdit()">Edit</a>
+                                </div>
+                            </div>
+                            </form>
+            `
+        })
+    }
+    function turnOnEdit() {
+        document.getElementById('form-edit').innerHTML = ''
+        getUser(function (user_login) {
+            document.getElementById('form').innerHTML = `
+                <hr class="col-12">
+                <h1 class="tm-pt-30 tm-color-primary tm-post-title text-center">Thông tin cá nhân</h1>
+                            <form class="form-inline tm-mb-80 tm-search-form2">
+                            <div>
+                                <div class="tm-color-primary">Tên người dùng:</div>
+                                <input class="form-control tm-search-input" id="name" value="${user_login.name}" type="text">
+                                <div class="tm-color-primary">Năm sinh:</div>
+                                <input class="form-control tm-search-input" id="birthday" value="${user_login.birthday}" type="date">
+                                <div class="tm-color-primary">Địa chỉ:</div>
+                                <input class="form-control tm-search-input" id="address" value="${user_login.address}" type="text">
+                                <div class="mt-3 text-center">
+                                    <a href="#/" class="tm-btn-primary" onclick="editUser(${user_login.id})">Save</a>
+                                </div>
+                            </div>
+                            </form>
+            `
+        })
+    }
+
+    function editUser(id) {
+        getUser(function (user_login) {
+            let data = {
+                id: id,
+                user: user_login.user,
+                password: user_login.password,
+                name: document.getElementById("name").value,
+                birthday: document.getElementById("birthday").value,
+                address: document.getElementById("address").value,
+            }
+            axios.put(USER_URL + "/" + id, data).then(res => {
+                showUser()
+            })
+        })
+    }
+    function logout() {
+        localStorage.removeItem('user')
+        localStorage.removeItem('id_user')
+    }
+
+    function clear() {
+        document.getElementById("form").innerHTML = "";
+        document.getElementById("form-edit").innerHTML = "";
+    }
+    function getBlog(callback) {
+        axios.get(BLOG_URL).then(res => {
+            let blog = res.data;
+            callback(blog)
+            blog.map(blogitem=>{
+                axios.get(LIKE_URL + "/blog/" + blogitem.id + "/likes/count").then(res => {
+                })
+            })
+        })
+    }
+
+    function showMyList() {
+        getUser(function (user_login) {
+            let str = ''
+            getBlog(function (blog){
+            })
+            axios.get(BLOG_URL + "/user/" + user_login.id).then(res => {
+                let data = res.data;
+                data.map(item => {
+                    str += `<article class="col-12 col-md-6 tm-post">
+                    <hr class="tm-hr-primary">
+                    <a href="post.html" class="effect-lily tm-post-link tm-pt-60" onclick="goToBLog(${item.id})">
+                        <div class="tm-post-link-inner">
+                            <img src="img/img-01.jpg" alt="Image" class="img-fluid">
+                        </div>
+                         <a href="#/" class="position-absolute tm-new-badge-delete" onclick="deleteById(${item.id})">X</a>
+                         <a href="#/" class="position-absolute tm-new-badge-edit" onclick="showFormEdit(${item.id})">Edit</a>
+                        <span class="position-absolute tm-new-badge-blog text-uppercase" >${item.mode}</span>
+                        <h2 class="tm-pt-30 tm-color-primary tm-post-title">${item.title}</h2>
+                    </a>
+                    <p class="tm-pt-30">
+                        ${item.content}
+                    </p>
+                    <div class="d-flex justify-content-between tm-pt-45">
+                        <span class="tm-color-primary">${item.genre}</span>
+                        <span class="tm-color-primary">${item.date}</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <span>${item.likee} lượt thích</span>
+                        <span>Đăng bởi:${item.user.name} </span>
+                    </div>
+                </article>`
+                })
+                document.getElementById("form-edit").innerHTML = str;
+            })
+        })
+    }
+
+    function showFormAdd() {
+        let str = `
+                    <div class="row tm-row">
+                        <div class="col-12">
+                            <h1 class="tm-pt-30 tm-color-primary tm-post-title">Nhập thông tin bài viết mới</h1>
+                            <form method="POST" class=" tm-mb-80 ">
+                            <div>
+                                <div class="tm-color-primary">Nhập tiêu đề bài viết:</div>
+                                <input class="form-control tm-search-input" id="title" type="text" >
+                                <div class="tm-color-primary">Nhập nội dung bài viết:</div>
+                                <div id="add-content"></div>
+                                <div class="tm-color-primary">Nhập thể loại:</div>
+                                <input class="form-control tm-search-input" id="genre" type="text">
+                                <div class="tm-color-primary">Nhập ngày đăng:</div>
+                                <input class="form-control tm-search-input" id="date" type="date">
+                                <div class="tm-color-primary">Nhập chế độ bài viết:</div>
+                                <select class="form-control tm-search-input" id="mode" name="mode" >
+                                    <option value="public">public</option>
+                                    <option value="private">private</option>
+                                </select>
+                            </div>
+                            <div class="mt-3"><a href="#/" class="tm-new-badge" onclick="saveAdd()">
+                                   Lưu
+                                </a></div>
+                            </form>
+                        </div>
+                    </div>
+                     `
+        document.getElementById("form-edit").innerHTML = str;
+        ClassicEditor
+            .create( document.getElementById( 'add-content' ) )
+            .then( editor => {
+                addContent = editor
+            } )
+            .catch( error => {
+                console.error( error );
+            } );
+        document.getElementById("form").innerHTML = "";
+    }
+    let addContent, editContent;
+    function saveAdd() {
+        getUser(function (user_login){
+            let dataAdd = addContent.getData();
+            let data = {
+                title: document.getElementById("title").value,
+                content: dataAdd,
+                genre: document.getElementById("genre").value,
+                date: document.getElementById("date").valueAsDate,
+                mode: document.getElementById("mode").value,
+                user: {id: user_login.id}
+            }
+            axios.post(BLOG_URL, data).then(res => {
+                clear()
+                showMyList()
+            })
+        })
+    }
+
+    function showFormEdit(id) {
+        axios.get(BLOG_URL + '/' + id).then(res => {
+            let data = res.data;
+            let str = `
+                <div class="row tm-row">
+                    <div class="col-12">
+                        <h1 class="tm-pt-30 tm-color-primary tm-post-title">Sửa thông tin blog</h1>
+                        <form method="POST" class=" tm-mb-80 ">
+                            <div>
+                                <div class="tm-color-primary">Nhập tiêu đề bài viết:</div>
+                                <input class="form-control tm-search-input" id="title" type="text" value="${data.title}">
+                                <div class="tm-color-primary">Nhập nội dung bài viết:</div>
+                                <div id="edit-content"></div>
+                                <div class="tm-color-primary">Nhập thể loại:</div>
+                                <input class="form-control tm-search-input" id="genre" type="text" value="${data.genre}" >
+                                <div class="tm-color-primary">Nhập ngày đăng:</div>
+                                <input class="form-control tm-search-input" id="date" type="date" value="${data.date}">
+                                <div class="tm-color-primary">Nhập chế độ bài viết:</div>
+                                <select class="form-control tm-search-input" id="mode" name="mode">`
+            if(data.mode == "public"){
+               str+=   `<option value="public" selected>public</option>
+                        <option value="private">private</option>`
+            }else{
+               str+=   `<option value="public">public</option>
+                        <option value="private" selected>private</option>`
+            }
+            str+=`
+                                </select>
+                            </div>
+                            <div class="mt-3"><a href="#/" class="tm-new-badge" onclick="update(${id})">
+                                   Lưu
+                                </a></div>
+                        </form>
+                    </div>
+                </div>
+                     `
+            document.getElementById("form").innerHTML = str;
+            ClassicEditor
+                .create( document.getElementById( 'edit-content' ) )
+                .then( editor => {
+                    editor.setData(`${data.content}`)
+                    editContent = editor
+                } )
+                .catch( error => {
+                    console.error( error );
+                } );
+            document.getElementById("form-edit").innerHTML = "";
+        })
+    }
+
+    function update(id) {
+        getUser(function (user_login){
+            let dataContent = editContent.getData()
+            let data = {
+                title: document.getElementById("title").value,
+                content: dataContent,
+                genre: document.getElementById("genre").value,
+                date: document.getElementById("date").valueAsDate,
+                mode: document.getElementById("mode").value,
+                user: {id: user_login.id}
+            }
+            axios.put(BLOG_URL + '/' + id, data).then(res => {
+                clear()
+            })
+        })
+    }
+
+    function deleteById(id) {
+        axios.delete(BLOG_URL + '/' + id, id).then(res => {
+            showMyList()
+        })
+    }
+    function findMyPost(){
+        document.getElementById('form').innerHTML = '';
+        document.getElementById('form-edit').innerHTML=`
+        <div class="row tm-row">
+            <div class="col-12">
+                <div class="form-inline tm-mb-80 tm-search-form">
+                    <input class="form-control tm-search-input" id="tittle" type="text" placeholder="Nhập tiêu đề bài viết"
+                           aria-label="Search">
+                    <button class="tm-search-button"  onclick="find()">
+                        <i class="fas fa-search tm-search-icon" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        `
+    }
+    function find() {
+        getUser(function (user_login){
+            let tittle = document.getElementById('tittle').value
+            axios.get(BLOG_URL+'/user/tittles/'+tittle).then(res=>{
+                let data = res.data
+                let str=''
+                let str2=''
+                data.map(item=>{
+                    if(item != null && item.user.id == user_login.id){
+                        str += `<article class="col-12 col-md-6 tm-post">
+                                    <hr class="tm-hr-primary">
+                                    <a href="post.html" class="effect-lily tm-post-link tm-pt-60" onclick="goToBLog(${item.id})">
+                                        <div class="tm-post-link-inner">
+                                            <img src="img/img-01.jpg" alt="Image" class="img-fluid">
+                                        </div>
+                                        <span class="position-absolute tm-new-badge text-uppercase" >${item.mode}</span>
+                                        <h2 class="tm-pt-30 tm-color-primary tm-post-title">${item.title}</h2>
+                                    </a>
+                                    <p class="tm-pt-30">
+                                        ${item.content}
+                                    </p>
+                                    <div class="d-flex justify-content-between tm-pt-45">
+                                        <span class="tm-color-primary">${item.genre}</span>
+                                        <span class="tm-color-primary">${item.date}</span>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between">
+                                        <span>${item.likee} lượt thích</span>
+                                        <span>Đăng bởi:${item.user.name} </span>
+                                    </div>
+                                </article>`
+                    }else if(item == null || item.user.id != user_login.id){
+                        str2 = `
+                               <h3>Không tìm thấy bài viết. Hãy thử lại</h3>
+                        `
+                    }
+                })
+                if(str2 != '' && str == ''){
+                    document.getElementById('form').innerHTML = str2;
+                    document.getElementById('form-edit').innerHTML = '';
+                }else if(str2 == '' && str == ''){
+                    document.getElementById('form').innerHTML = `
+                               <h3>Không tìm thấy bài viết. Hãy thử lại</h3>
+                        `;
+                    document.getElementById('form-edit').innerHTML = '';
+                }
+                else {
+                    document.getElementById('form-edit').innerHTML = str;
+                    document.getElementById('form').innerHTML = '';
+                }
+            })
+        })
+    }
+    function goToBLog(id){
+        localStorage.setItem("blog", id)
+    }
+</script>
+</body>
+</html>

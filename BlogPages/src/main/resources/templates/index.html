@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+</head>
+<body>
+<div id="body"></div>
+<script>
+    const BLOG_URL = 'http://localhost:8080/blog-management/blogs'
+    function loadListBlog() {
+        let str='<div>' +
+            '    <button onclick="loadListBlog()">List</button>\n' +
+            '    <button onclick="showFormAdd()">Add</button>\n' +
+            '</div>' +
+            '<div id="display"></div>'
+        axios.get(BLOG_URL).then(res => {
+            let data = res.data
+            data.map(item => {
+                str += `<h3>${item.id}, ${item.title}, ${item.content}, ${item.page}
+                        <button onclick="showFormEdit(${item.id})">Edit</button>
+                        <button onclick="deleteById(${item.id})">Delete</button>
+                        </h3>
+                        `
+            })
+        })
+        document.getElementById("body").innerHTML = str;
+    }
+    function showFormAdd() {
+        let str = `
+        Add Form <br>
+        Name: <input type="text" id="name"><br>
+        Price: <input type="number" id="price"><br>
+        <button onclick="save()">Save</button>
+        `
+        document.getElementById("body").innerHTML = str;
+    }
+
+    function save() {
+        let data = {
+            name: document.getElementById("name").value,
+            price: document.getElementById("price").value
+        }
+        axios.post(BLOG_URL, data).then(res => {
+            loadListBlog();
+        })
+
+    }
+
+    function showFormEdit(id) {
+        axios.get(BLOG_URL+'/'+id).then(res=>{
+            let data= res.data;
+            let str = `
+        Edit Form <br>
+        Name: <input type="text" id="name" value="${data.name}"><br>
+        Price: <input type="number" id="price" value="${data.price}"><br>
+        <button onclick="update(${id})">Save</button>
+        `
+            document.getElementById("body").innerHTML = str;
+        })
+    }
+
+    function update(id) {
+        let data = {
+            id: id,
+            name: document.getElementById("name").value,
+            price: document.getElementById("price").value
+        }
+        axios.put(BLOG_URL+'/'+id, data).then(res => {
+            loadListBlog();
+        })
+    }
+    function deleteById(id){
+        axios.delete(BLOG_URL+'/'+id, id).then(res=>{
+            loadListBlog();
+        })
+    }
+</script>
+</body>
+</html>
